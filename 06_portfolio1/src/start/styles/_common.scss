@@ -1,0 +1,21 @@
+#asides {
+    position: relative;
+    z-index: 10;
+    font-size: 14px; // em
+}
+
+.side {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    right: 0;
+    color: #dadada;
+    height: 100vh;
+    pointer-events: none;
+
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

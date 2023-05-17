@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./scripts/index.js" type="module"></script>
+    <title>WebGL Practical</title>
+    <link rel="stylesheet" href="./styles/loader.scss" />
+  </head>
+  <body>
+    <div id="loader" class="loader">
+      <div class="loader-inner">
+        <div class="loader-rect">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <span class="loader-percent">0%</span>
+      </div>
+    </div>
+    <div id="global-container">
+      <div id="page-container">
+        <section class="fv">
+          <div class="fv__content"
+          data-mouse="highlight"
+          data-mouse-scale="3"
+          >
+            <div class="fv__text-shader"
+              data-webgl="slider-wave"
+              data-tex-1="/img/headline/fv__headline.png"
+              data-tex-2="/img/headline/fv_slider_text_1.png"
+              data-tex-3="/img/headline/fv_slider_text_2.png"
+              data-tex-4="/img/headline/fv_slider_text_3.png"
+              data-tex-5="/img/headline/fv_slider_text_4.png"
+              ></div>
+          </div>
+          <!-- <div class="fv__main">
+            <div class="fv__holder">
+              <div class="fv__slider slider"
+                data-webgl="slider-world"
+                data-tex-1="/movie/turtle.mp4"
+                data-tex-2="/img/slider/slider_1.jpg"
+                data-tex-3="/img/slider/slider_2.jpg"
+                data-tex-4="/img/slider/slider_3.jpg"
+                data-tex-5="/img/slider/slider_5.jpg"
+                >
+              </div>
+            </div>
+          </div> -->
+          <div class="fv__nav">
+            <button class="fv__btn prev" data-mouse="stuck">
+              <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="60" cy="60" r="59.5" stroke="white"/>
+                <path d="M85 61L47.5 82.6506L47.5 39.3494L85 61Z" fill="white"/>
+              </svg>
+            </button>
+            <button class="fv__btn next" data-mouse="stuck">
+              <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="60" cy="60" r="59.5" stroke="white"/>
+                <path d="M85 61L47.5 82.6506L47.5 39.3494L85 61Z" fill="white"/>
+              </svg>
+            </button>
+          </div>
+        </section>
+      </div>
+      
+      <canvas id="canvas"></canvas>
+      <!-- <svg class="mouse-viewport" width="400" height="400" preserveAspectRatio="xMidYMid meet" viewbox="0 0 200 400" style="background: white">
+        <rect width="400" height="400" x="0" y="0" stroke="red" stroke-width="4" fill="yellow"></rect>
+        <circle r="100" cx="100" cy="100" fill="blue"></circle>
+        <circle r="100" cx="200" cy="200" fill="purple"></circle>
+      </svg> -->
+      <!-- meet -> object-fit: contain -->
+      <!-- slice -> object-fit: cover -->
+      <!-- <style>
+        .mouse-viewport {
+          background: white;
+          position: fixed;
+          top: 0;
+        }
+      </style> -->
+    </div>
+  </body>
+</html>

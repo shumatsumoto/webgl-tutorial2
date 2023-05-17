@@ -1,0 +1,34 @@
+@use "sass:math";
+
+$default-min-bp: 375px;
+$default-max-bp: 1280px;
+$root-font-size: 16px;
+
+@function to-rem($px) {
+  $rem: math.div($px, $root-font-size) * 1rem;
+  @return $rem;
+}
+
+@function to-em($px, $parent-px: $root-font-size) {
+  $em: math.div($px, $parent-px) * 1em;
+  @return $em;
+}
+
+@function rnd($number, $places: 0) {
+  $n: 1;
+  @if $places > 0 {
+    @for $i from 1 through $places {
+      $n: $n * 10;
+    }
+  }
+  @return math.div(math.round($number * $n), $n);
+}
+
+@function fluid-text($min-px, $max-px, $min-bp: $default-min-bp, $max-bp: $default-max-bp) {
+  $slope: math.div($max-px - $min-px, $max-bp - $min-bp);
+  $slope-vw: $slope * 100;
+  $intercept-rems: to-rem($min-px - $slope * $min-bp);
+  $min-rems: to-rem($min-px);
+  $max-rems: to-rem($max-px);
+  @return clamp(#{$min-rems}, #{$slope-vw}vw + #{$intercept-rems}, #{$max-rems});
+}

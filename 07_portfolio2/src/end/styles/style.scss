@@ -1,0 +1,10 @@
+﻿@use "./vendors/css-reset.css";
+@use "./parts/common";
+@use "./parts/mouse";
+@use "./parts/menu";
+@use "./parts/fonts";
+
+// include page
+@use "./pages/home";
+@use "./pages/diverse";
+

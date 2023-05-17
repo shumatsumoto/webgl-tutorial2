@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./scripts/index.js" type="module"></script>
+    <title>WebGL Practical</title>
+    <link rel="stylesheet" href="./styles/loader.scss" />
+  </head>
+  <body>
+    <div id="loader" class="loader">
+      <div class="loader-inner">
+        <div class="loader-rect">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <span class="loader-percent">0%</span>
+      </div>
+    </div>
+    <div id="global-container">
+      <div id="page-container">
+        <h2>distortion-text</h2>
+        <h2 class="section-title">
+          <span class="section-title-text"
+          data-webgl="distortion-text" data-tex-1="/img/headline/VISION.png"
+          >VISION</span>
+        </h2>
+        <style>
+          .section-title {
+            font-size: 70px;
+            line-height: 0.8;
+          }
+          .section-title-text {
+            /* opacity: 1 !important; */
+            color: red;
+            display: inline-block;
+          }
+        </style>
+        <h2>particles</h2>
+        <div id="particle-slide">
+          <!-- <div class="div" data-webgl="particles" data-tex-1="/img/slider/slider_3.jpg" data-tex-2="/img/slider/slider_2.jpg"></div> -->
+          <div class="div" data-webgl="particles" data-tex-1="/movie/turtle.mp4" data-tex-2="/movie/beach.mp4"></div>
+        </div>
+        <style>
+          #particle-slide {
+            position: relative;
+            display: inline-block;
+          }
+          .particle-child {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            margin: 0;
+          }
+        </style>
+        <h2>plane-sphere</h2>
+        <div
+          class="div"
+          data-webgl="plane-sphere"
+          data-tex-1="/img/slider/slider_2.jpg"
+        ></div>
+        <h2>gray-pic</h2>
+        <div
+          class="div"
+          data-webgl="gray-pic"
+          data-tex-1="/img/slider/slider_1.jpg"
+          data-tex-2="/img/slider/slider_2.jpg"
+          data-tex-3="/img/slider/slider_3.jpg"
+          data-tex-4="/img/slider/slider_4.jpg"
+          data-tex-5="/img/slider/slider_5.jpg"
+        ></div>
+        <style>
+          .div {
+            width: 800px;
+            max-width: 100%;
+            height: 400px;
+          }
+          img {
+            margin-top: 100px;
+            width: 80%;
+          }
+        </style>
+      </div>
+
+      <canvas id="canvas"></canvas>
+    </div>
+  </body>
+</html>

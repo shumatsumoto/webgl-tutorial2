@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS変数</title>
+  </head>
+  <body>
+    <h1>CSS変数</h1>
+    <p>メリット</p>
+    <ul>
+      <li>値に名前を付けることによって読みやすいコードとなる</li>
+      <li>変数で値を一元管理することができる</li>
+      <li>JSでの値の変更がしやすくなる</li>
+    </ul>
+
+    <!-- <style>
+      :root {
+        --c-orange: orange;
+        --medium-size: 20px;
+      }
+      h1 {
+        font-size: var(--medium-size);
+        background: var(--c-orange);
+        color: var(--c-purple, purple);
+      }
+      .orange-bg {
+        background-color: var(--c-orange);
+      }
+    </style> -->
+
+    <!-- <script>
+      setTimeout(() => {
+        const root = document.querySelector(':root');
+        root.style.setProperty('--c-orange', 'red');
+      }, 2000);
+    </script> -->
+
+  </body>
+</html>

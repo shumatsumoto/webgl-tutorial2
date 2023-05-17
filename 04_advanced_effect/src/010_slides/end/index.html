@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./scripts/index.js" type="module"></script>
+    <title>WebGL Practical</title>
+    <link rel="stylesheet" href="./styles/loader.scss" />
+  </head>
+  <body>
+    <div id="loader" class="loader">
+      <div class="loader-inner">
+        <div class="loader-rect">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <span class="loader-percent">0%</span>
+      </div>
+    </div>
+    <div id="global-container">
+      <div id="page-container">
+        <section class="fv">
+          <div class="fv__content">
+            <div
+              class="fv__text-shader"
+              data-webgl="slider-wave"
+              data-tex-1="/img/headline/fv__headline.png"
+              data-tex-2="/img/headline/fv_slider_text_1.png"
+              data-tex-3="/img/headline/fv_slider_text_2.png"
+              data-tex-4="/img/headline/fv_slider_text_3.png"
+              data-tex-5="/img/headline/fv_slider_text_4.png"
+            ></div>
+          </div>
+          <div class="fv__main">
+            <div class="fv__holder">
+              <div
+                class="fv__slider slider"
+                data-webgl="slider-world"
+                data-tex-1="/movie/turtle.mp4"
+                data-tex-2="/img/slider/slider_1.jpg"
+                data-tex-3="/movie/beach.mp4"
+                data-tex-4="/img/slider/slider_3.jpg"
+                data-tex-5="/img/slider/slider_5.jpg"
+              ></div>
+            </div>
+          </div>
+          <div class="fv__nav">
+            <button class="fv__btn prev">
+              <img src="/img/slide-nav.svg" alt="前へ" />
+            </button>
+            <button class="fv__btn next">
+              <img src="/img/slide-nav.svg" alt="次へ" />
+            </button>
+          </div>
+        </section>
+        <section class="skill">
+          <div class="skill__inner">
+            <div class="skill__holder">
+              <div
+                class="skill__slider slider"
+                data-webgl="slider-reflect"
+                data-tex-1="/img/slider/slider_1.jpg"
+                data-tex-2="/img/slider/slider_4.jpg"
+                data-tex-3="/img/slider/slider_3.jpg"
+                data-tex-4="/img/slider/slider_2.jpg"
+                data-tex-5="/movie/turtle.mp4"
+              ></div>
+            </div>
+            <div class="skill__content">
+              <ul class="skill__ul">
+                <li class="skill__li">
+                  <h3 class="skill__headline">正規化</h3>
+                  <p class="skill__text">
+                    正規化とはデータを一定のルールに基づいて、利用しやすい形に変形すること。WebGLにおいては正規化によってベクトルの長さを１にしたり、ある変数の取りうる値の範囲を-1
+                    ~ 1にします。
+                  </p>
+                </li>
+                <li class="skill__li">
+                  <h3 class="skill__headline">座標</h3>
+                  <p class="skill__text">
+                    座標とは空間内の点の位置を一意に指定するための数の組みで、WebGLにおいては頂点やテクスチャ画像の位置を指定するために使用されます。
+                  </p>
+                </li>
+                <li class="skill__li">
+                  <h3 class="skill__headline">ベクトル</h3>
+                  <p class="skill__text">
+                    数学、物理学においてベクトルは大きさと方向を持つ量で、幾何学的に矢印としてイメージされます。WebGLにおいては頂点の座標やカメラや光の向きの表現に利用されます。
+                  </p>
+                </li>
+                <li class="skill__li">
+                  <h3 class="skill__headline">線形補完</h3>
+                  <p class="skill__text">
+                    線形補完とは、既知の2点の間に存在する値を線形である１次関数を用いて近似的に求める手法です。WebGLでは各フラグメントには線形補完された値が渡ってきます。
+                  </p>
+                </li>
+                <li class="skill__li">
+                  <h3 class="skill__headline">行列</h3>
+                  <p class="skill__text">
+                    行列とは数や記号を縦と横に矩形に配列したものです。WebGLにおいては頂点の座標を表すベクトルと掛け合わせることで、ベクトルの回転や長さの変更を行うことができます。
+                  </p>
+                </li>
+              </ul>
+            </div>
+            <div class="fv__nav">
+              <!-- 
+                2023/05/13 下記のreflectクラスはmountSkillBtnHandlerでボタンを指定するために追加。
+                解説）動画ではスライダーを一つづつ実装しているため、ボタンも一つ分で良かったが、
+                完成形コードでは２つのスライダーを同時に表示しているため、fv__btnの指定だけではmountSkillBtnHandlerでボタンを.fv__btnで指定すると、slider-world用のボタンが取れてしまうため、.fv__btn.prev.reflectのようにして下記のボタンを指定できるようにreflectクラスを追加しています。
+               -->
+              <button class="fv__btn prev reflect">
+                <img src="/img/slide-nav.svg" alt="前へ" />
+              </button>
+              <button class="fv__btn next reflect">
+                <img src="/img/slide-nav.svg" alt="次へ" />
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <canvas id="canvas"></canvas>
+    </div>
+  </body>
+</html>

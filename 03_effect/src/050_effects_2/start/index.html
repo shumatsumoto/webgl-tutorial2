@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./scripts/index.js" type="module"></script>
+    <title>WebGL Practical</title>
+    <link rel="stylesheet" href="./styles/loader.scss" />
+  </head>
+  <body>
+    <div id="loader" class="loader">
+      <div class="loader-inner">
+        <div class="loader-rect">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <span class="loader-percent">0%</span>
+      </div>
+    </div>
+    <div id="global-container">
+      <div id="page-container">
+        <h2>gray-pic</h2>
+        <p>start/index.htmlからgray-pic用のdivタグのコメントアウトを外してはじめてください。</p>
+        <!-- gray-pic用のdivタグです。-->
+        <!-- <div
+          class="div"
+          data-webgl="gray-pic"
+          data-tex-1="/img/slider/slider_1.jpg"
+          data-tex-2="/img/slider/slider_2.jpg"
+          data-tex-3="/img/slider/slider_3.jpg"
+          data-tex-4="/img/slider/slider_4.jpg"
+          data-tex-5="/img/slider/slider_5.jpg"
+        ></div> -->
+        <style>
+          .div {
+            width: 800px;
+            max-width: 100%;
+            height: 400px;
+          }
+          img {
+            margin-top: 100px;
+            width: 80%;
+          }
+        </style>
+      </div>
+
+      <canvas id="canvas"></canvas>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>media query(rem Vs em Vs px)</title>
+  </head>
+  <body>
+    <h1 style="margin: 0">Media Query</h1>
+    <div class="container">
+      <div class="left">
+        <h2>メニュー</h2>
+        <ul>
+          <li>Home</li>
+          <li>About</li>
+          <li>Service</li>
+          <li>Price</li>
+          <li>Blog</li>
+        </ul>
+      </div>
+      <div class="right">
+        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
+          voluptatum magni tempora ducimus eligendi labore facere quas quidem
+          recusandae enim numquam similique vitae dolorem, omnis id. Optio
+          provident ea ducimus.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
+          voluptatum magni tempora ducimus eligendi labore facere quas quidem
+          recusandae enim numquam similique vitae dolorem, omnis id. Optio
+          provident ea ducimus.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
+          voluptatum magni tempora ducimus eligendi labore facere quas quidem
+          recusandae enim numquam similique vitae dolorem, omnis id. Optio
+          provident ea ducimus.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
+          voluptatum magni tempora ducimus eligendi labore facere quas quidem
+          recusandae enim numquam similique vitae dolorem, omnis id. Optio
+          provident ea ducimus.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
+          voluptatum magni tempora ducimus eligendi labore facere quas quidem
+          recusandae enim numquam similique vitae dolorem, omnis id. Optio
+          provident ea ducimus.
+        </p>
+      </div>
+    </div>
+
+    <style>
+      html {
+        /* font-size: 200%; */
+      }
+      * {
+        box-sizing: border-box;
+      }
+      div {
+        padding: 5em 3em;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+      }
+      .left {
+        flex: 1 0 30%;
+        border: red 5px solid;
+      }
+      .right {
+        flex: 1 0 70%;
+        text-align: center;
+        border: blue 5px solid;
+      }
+      @media (min-width: 800px) {
+        .container {
+          flex-direction: row;
+        }
+      }
+      /* @media (min-width: 50em) {
+        .container {
+          flex-direction: row;
+        }
+      } */
+    </style>
+  </body>
+</html>

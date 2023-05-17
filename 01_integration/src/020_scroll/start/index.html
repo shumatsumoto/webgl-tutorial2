@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./index.js" type="module"></script>
+    <title>WebGL Practical</title>
+  </head>
+  <body>
+    <div data-webgl></div>
+    <section data-webgl></section>
+    <img data-webgl src="/img/slider/slider_1.jpg"/>
+    <style>
+      [data-webgl] {
+        background: green;
+        opacity: .3;
+      }
+
+      div {
+        margin-left: 100px;
+        margin-top: 100px;
+        width: 100px;
+        height: 100px;
+      }
+
+      section {
+        margin-left: 300px;
+        margin-top: 50px;
+        width: 200px;
+        height: 100px;
+      }
+
+      img {
+        position: absolute;
+        right: 100px;
+        width: 300px;
+        top: 10px;
+      }
+      
+      body {
+        height: 200vh;
+      }
+    </style>
+    <canvas id="canvas"></canvas>
+  </body>
+</html>

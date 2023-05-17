@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rem vs em vs px</title>
+  </head>
+  <body>
+    <h1>rem vs em vs px</h1>
+    <ul>
+      <li>px : 絶対値</li>
+      <li>rem : htmlのfont-sizeとの相対値</li>
+      <li>em : 自身のfont-sizeとの相対値</li>
+      <li>Chrome フォントサイズ設定<br />[ chrome://settings/fonts ]</li>
+    </ul>
+    <div class="box px"><h2>px</h2></div>
+    <div class="box rem"><h2>rem</h2></div>
+    <div class="box em"><h2>em</h2></div>
+    <style>
+      /* html {
+        font-size: 100%;
+      } */
+      .box {
+        color: white;
+        background: green;
+      }
+      .px {
+        width: 160px;
+        height: 160px;
+        background: green;
+      }
+      .rem {
+        width: 10rem;
+        height: 10rem;
+        background: blue;
+      }
+      .em {
+        /* font-size: 16px; */
+        width: 10em;
+        height: 10em;
+        background: red;
+      }
+      h2 {
+        font-size: 50px;
+        margin: 0;
+      }
+      ul {
+        font-size: 1.5em;
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+﻿import frag from "./fragment.glsl";
+import vert from "./vertex.glsl";
+import { Ob } from "../Ob.js";
+
+export default class extends Ob {
+  setupFragment() {
+    return frag;
+  }
+  setupVertex() {
+    return vert;
+  }
+}

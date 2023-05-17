@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./scripts/index.js" type="module"></script>
+    <title>WebGL Practical</title>
+    <link rel="stylesheet" href="./styles/loader.scss" />
+  </head>
+  <body>
+    <div id="loader" class="loader">
+      <div class="loader-inner">
+        <div class="loader-rect">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <span class="loader-percent">0%</span>
+      </div>
+    </div>
+    <div id="global-container">
+      <div id="page-container">
+        <section class="fv">
+          <div class="fv__content">
+            <div class="fv__text-shader"
+              data-webgl="slider-wave"
+              data-tex-1="/img/headline/fv__headline.png"
+              data-tex-2="/img/headline/fv_slider_text_1.png"
+              data-tex-3="/img/headline/fv_slider_text_2.png"
+              data-tex-4="/img/headline/fv_slider_text_3.png"
+              data-tex-5="/img/headline/fv_slider_text_4.png"
+              ></div>
+          </div>
+          <div class="fv__main">
+            <div class="fv__holder">
+              <div class="fv__slider slider"
+                data-webgl="slider-world"
+                data-tex-1="/movie/turtle.mp4"
+                data-tex-2="/img/slider/slider_1.jpg"
+                data-tex-3="/img/slider/slider_2.jpg"
+                data-tex-4="/img/slider/slider_3.jpg"
+                data-tex-5="/img/slider/slider_5.jpg"
+                >
+              </div>
+            </div>
+          </div>
+          <div class="fv__nav">
+            <button class="fv__btn prev">
+              <img src="/img/slide-nav.svg" alt="前へ">
+            </button>
+            <button class="fv__btn next">
+              <img src="/img/slide-nav.svg" alt="次へ">
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <canvas id="canvas"></canvas>
+    </div>
+  </body>
+</html>
