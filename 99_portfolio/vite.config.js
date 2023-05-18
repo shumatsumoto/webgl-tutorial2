@@ -52,7 +52,7 @@ export default defineConfig({
       input: {
         // htmlを追加する場合にはこちらに追記
         index: resolve(root, "index.html"),
-        // diverse: resolve(root, "diverse.html"),
+        diverse: resolve(root, "diverse.html"),
       },
     },
   },
