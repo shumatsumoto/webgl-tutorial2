@@ -21,6 +21,9 @@ export default async function ({
 
   // パーティクルのエフェクトを取得
   particles = world.getObjByEl("#particles");
+  const sphere = world.getObjByEl(".test-sphere");
+  // sphere.fixed = true;
+  console.log(sphere);
 
   // ローディングアニメーションの追加
   loader.addLoadingAnimation(loadAnimation);
