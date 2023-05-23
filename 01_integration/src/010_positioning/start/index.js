@@ -25,18 +25,23 @@ function init() {
   world.renderer.setClearColor(0x000000, 0);
 
   world.scene = new Scene();
-  world.camera = new PerspectiveCamera(
-    75,
-    canvasRect.width / canvasRect.height,
-    0.1,
-    1000
-  );
-  world.camera.position.z = 5;
 
-  const geometry = new PlaneGeometry(1, 1);
+  const cameraWidth = canvasRect.width;
+  const cameraHeight = canvasRect.height;
+  const near = 1500;
+  const far = 4000;
+  const aspect = cameraWidth / cameraHeight;
+  const cameraZ = 2500;
+  const radian = 2 * Math.atan(cameraHeight / 2 / cameraZ);
+  const fov = radian * (180 / Math.PI);
+
+  world.camera = new PerspectiveCamera(fov, aspect, near, far);
+  world.camera.position.z = cameraZ;
+
+  const geometry = new PlaneGeometry(100, 100);
   const material = new MeshBasicMaterial({ color: 0xff0000 });
   const mesh = new Mesh(geometry, material);
-
+  mesh.position.z = 0;
   world.scene.add(mesh);
 
   animate();
