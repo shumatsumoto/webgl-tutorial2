@@ -10,11 +10,12 @@ import {
 import "./style.scss";
 
 const world = {};
+const os = [];
+const canvas = document.querySelector("#canvas");
+const canvasRect = canvas.getBoundingClientRect();
 
 init();
 function init() {
-  const canvas = document.querySelector("#canvas");
-  const canvasRect = canvas.getBoundingClientRect();
   console.log(canvasRect);
   world.renderer = new WebGLRenderer({
     canvas,
@@ -31,7 +32,7 @@ function init() {
   const near = 1500;
   const far = 4000;
   const aspect = cameraWidth / cameraHeight;
-  const cameraZ = 2500;
+  const cameraZ = 2000;
   const radian = 2 * Math.atan(cameraHeight / 2 / cameraZ);
   const fov = radian * (180 / Math.PI);
 
@@ -42,22 +43,50 @@ function init() {
   els.forEach((el) => {
     const rect = el.getBoundingClientRect();
     const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
-    const material = new MeshBasicMaterial({ color: 0xff0000 });
+    const material = new MeshBasicMaterial({
+      color: 0xff0000,
+      transparent: true,
+      opacity: 0.3,
+    });
     const mesh = new Mesh(geometry, material);
+    mesh.position.z = 0;
 
     const { x, y } = getWorldPosition(rect, canvasRect);
     mesh.position.x = x;
     mesh.position.y = y;
 
-    mesh.position.z = 0;
+    const o = {
+      mesh,
+      geometry,
+      material,
+      rect,
+      $: {
+        el,
+      },
+    };
+
     world.scene.add(mesh);
-    console.log(el);
+    os.push(o);
   });
-  animate();
-  function animate() {
-    requestAnimationFrame(animate);
+
+  render();
+  function render() {
+    requestAnimationFrame(render);
+    // スクロール処理
+    os.forEach((o) => scroll(o));
     world.renderer.render(world.scene, world.camera);
   }
+}
+
+function scroll(o) {
+  const {
+    $: { el },
+    mesh,
+  } = o;
+  const rect = el.getBoundingClientRect();
+  const { y } = getWorldPosition(rect, canvasRect);
+  console.log(rect.top, y);
+  mesh.position.y = y;
 }
 
 function getWorldPosition(rect, canvasRect) {
