@@ -38,18 +38,21 @@ function init() {
   world.camera = new PerspectiveCamera(fov, aspect, near, far);
   world.camera.position.z = cameraZ;
 
-  const geometry = new PlaneGeometry(100, 100);
-  const material = new MeshBasicMaterial({ color: 0xff0000 });
-  const mesh = new Mesh(geometry, material);
-  mesh.position.z = 0;
-  world.scene.add(mesh);
+  const els = document.querySelectorAll("[data-webgl]");
+  els.forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
+    const material = new MeshBasicMaterial({ color: 0xff0000 });
+    const mesh = new Mesh(geometry, material);
 
-  const div1 = document.querySelector("#div-1");
-  const rect = div1.getBoundingClientRect();
+    const { x, y } = getWorldPosition(rect, canvasRect);
+    mesh.position.x = x;
+    mesh.position.y = y;
 
-  const { x, y } = getWorldPosition(rect, canvasRect);
-  mesh.position.x = x;
-  mesh.position.y = y;
+    mesh.position.z = 0;
+    world.scene.add(mesh);
+    console.log(el);
+  });
   animate();
   function animate() {
     requestAnimationFrame(animate);

@@ -7,18 +7,31 @@
     <title>WebGL Practical</title>
   </head>
   <body>
-    <div id="div-1"></div>
+    <div data-webgl></div>
+    <section data-webgl></section>
+    <img data-webgl src="/img/slider/slider_1.jpg" alt="" />
     <style>
-      body {
-        height: 200vh;
+      [data-webgl] {
+        background-color: green;
+        opacity: 0.3;
       }
-      #div-1 {
+      div {
         margin-left: 100px;
         margin-top: 100px;
         width: 100px;
         height: 100px;
-        background-color: green;
-        opacity: 0.3;
+      }
+      section {
+        margin-left: 300px;
+        margin-top: 50px;
+        width: 200px;
+        height: 100px;
+      }
+      img {
+        position: absolute;
+        right: 100px;
+        width: 300px;
+        top: 10px;
       }
     </style>
     <canvas id="canvas"></canvas>
