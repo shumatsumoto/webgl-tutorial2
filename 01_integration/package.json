@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "gsap": "^3.11.4",
-    "smooth-scrollbar": "^8.8.1",
+    "smooth-scrollbar": "^8.8.3",
     "three": "^0.150.1"
   }
 }

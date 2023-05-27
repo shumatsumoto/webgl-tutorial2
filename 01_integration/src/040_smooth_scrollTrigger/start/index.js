@@ -1,6 +1,7 @@
 import "./style.scss";
 
 import gsap from "gsap";
+import SmoothScrollbar from "smooth-scrollbar";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   WebGLRenderer,
@@ -101,28 +102,31 @@ function getWorldPosition(rect, canvasRect) {
 function initScroller() {
   gsap.registerPlugin(ScrollTrigger);
 
+  const pageContainer = document.querySelector("#page-container");
+  SmoothScrollbar.init(pageContainer);
+
   const el = document.querySelector("[data-webgl]");
 
-  const meshX = os[0].mesh.position.x;
-  const animation = {
-    rotation: 0,
-    x: meshX,
-  }
-  gsap.to(animation, {
-    rotation: Math.PI * 2,
-    x: meshX + 600,
-    scrollTrigger: {
-        trigger: el,
-        start: "center 80%",
-        end: "center 20%",
-        scrub: true,
-        pin: true
-    },
-    onUpdate() {
-        os[0].mesh.position.x = animation.x;
-        os[0].mesh.rotation.z = animation.rotation;
-    }
-  })
+  // const meshX = os[0].mesh.position.x;
+  // const animation = {
+  //   rotation: 0,
+  //   x: meshX,
+  // };
+  // gsap.to(animation, {
+  //   rotation: Math.PI * 2,
+  //   x: meshX + 600,
+  //   scrollTrigger: {
+  //     trigger: el,
+  //     start: "center 80%",
+  //     end: "center 20%",
+  //     scrub: true,
+  //     pin: true,
+  //   },
+  //   onUpdate() {
+  //     os[0].mesh.position.x = animation.x;
+  //     os[0].mesh.rotation.z = animation.rotation;
+  //   },
+  // });
 }
 
 /**
