@@ -115,20 +115,20 @@ function initScroller() {
   const animation = {
     rotation: 0,
     x: meshX,
-  }
+  };
   gsap.to(animation, {
     rotation: Math.PI * 2,
     x: meshX + 600,
     scrollTrigger: {
-        trigger: el,
-        start: "center 80%",
-        end: "center 20%",
-        scrub: true,
-        pin: true
+      trigger: el,
+      start: "center 80%",
+      end: "center 20%",
+      scrub: true,
+      pin: true,
     },
     onUpdate() {
-        os[0].mesh.position.x = animation.x;
-        os[0].mesh.rotation.z = animation.rotation;
-    }
-  })
+      os[0].mesh.position.x = animation.x;
+      os[0].mesh.rotation.z = animation.rotation;
+    },
+  });
 }
