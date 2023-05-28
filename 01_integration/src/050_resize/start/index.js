@@ -19,6 +19,9 @@ const canvasRect = canvas.getBoundingClientRect();
 
 init();
 function init() {
+  initScroller();
+  bindResizeEvents();
+
   world.renderer = new WebGLRenderer({
     canvas,
     antialias: true,
@@ -71,8 +74,6 @@ function init() {
     os.push(o);
   });
 
-  initScroller();
-
   render();
   function render() {
     requestAnimationFrame(render);
@@ -93,6 +94,22 @@ function scroll(o) {
   mesh.position.y = y;
 }
 
+function resize(o, newCanvasRect) {
+  const {
+    $: { el },
+    mesh,
+    geometry,
+    rect,
+  } = o;
+  const nextRect = el.getBoundingClientRect();
+  const { x, y } = getWorldPosition(nextRect, newCanvasRect);
+  mesh.position.x = x;
+  mesh.position.y = y;
+
+  geometry.scale(nextRect.width / rect.width, nextRect.height / rect.height, 1);
+  o.rect = nextRect;
+}
+
 function getWorldPosition(rect, canvasRect) {
   const x = rect.left + rect.width / 2 - canvasRect.width / 2;
   const y = -rect.top - rect.height / 2 + canvasRect.height / 2;
@@ -102,7 +119,7 @@ function getWorldPosition(rect, canvasRect) {
 function initScroller() {
   gsap.registerPlugin(ScrollTrigger);
 
-  const pageContainer = document.querySelector('#page-container');
+  const pageContainer = document.querySelector("#page-container");
 
   const scrollBar = Scrollbar.init(pageContainer, { delegateTo: document });
 
@@ -111,7 +128,7 @@ function initScroller() {
       if (arguments.length) {
         scrollBar.scrollTop = value; // setter
       }
-      return scrollBar.scrollTop;    // getter
+      return scrollBar.scrollTop; // getter
     },
     // getBoundingClientRect() {
     //   return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
@@ -121,29 +138,58 @@ function initScroller() {
   scrollBar.addListener(ScrollTrigger.update);
 
   ScrollTrigger.defaults({
-    scroller: pageContainer
+    scroller: pageContainer,
   });
 
   const el = document.querySelector("[data-webgl]");
 
-  const meshX = os[0].mesh.position.x;
-  const animation = {
-    rotation: 0,
-    x: meshX,
-  }
-  gsap.to(animation, {
-    rotation: Math.PI * 2,
-    x: meshX + 600,
-    scrollTrigger: {
-        trigger: el,
-        start: "center 80%",
-        end: "center 20%",
-        scrub: true,
-        pin: true
-    },
-    onUpdate() {
-        os[0].mesh.position.x = animation.x;
-        os[0].mesh.rotation.z = animation.rotation;
-    }
-  })
+  // const meshX = os[0].mesh.position.x;
+  // const animation = {
+  //   rotation: 0,
+  //   x: meshX,
+  // }
+  // gsap.to(animation, {
+  //   rotation: Math.PI * 2,
+  //   x: meshX + 600,
+  //   scrollTrigger: {
+  //       trigger: el,
+  //       start: "center 80%",
+  //       end: "center 20%",
+  //       scrub: true,
+  //       pin: true
+  //   },
+  //   onUpdate() {
+  //       os[0].mesh.position.x = animation.x;
+  //       os[0].mesh.rotation.z = animation.rotation;
+  //   }
+  // })
+}
+
+function bindResizeEvents() {
+  let timerId = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      console.log("resize");
+
+      const newCanvasRect = canvas.getBoundingClientRect();
+      world.renderer.setSize(newCanvasRect.width, newCanvasRect.height, false);
+      os.forEach((o) => resize(o, newCanvasRect));
+
+      const cameraWidth = newCanvasRect.width;
+      const cameraHeight = newCanvasRect.height;
+      const near = 1500;
+      const far = 4000;
+      const aspect = cameraWidth / cameraHeight;
+      const cameraZ = 2000;
+      const radian = 2 * Math.atan(cameraHeight / 2 / cameraZ);
+      const fov = radian * (180 / Math.PI);
+
+      world.camera.near = near;
+      world.camera.far = far;
+      world.camera.aspect = aspect;
+      world.camera.fov = fov;
+      world.camera.updateProjectionMatrix();
+    }, 500);
+  });
 }
