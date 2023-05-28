@@ -10,6 +10,8 @@ import {
   PlaneGeometry,
   MeshBasicMaterial,
   Mesh,
+  Raycaster,
+  Vector2,
 } from "three";
 
 const world = {};
@@ -17,12 +19,14 @@ const os = [];
 const canvas = document.querySelector("#canvas");
 const canvasRect = canvas.getBoundingClientRect();
 
+const raycaster = new Raycaster();
+const pointer = new Vector2();
+
 init();
 function init() {
-  
   initScroller();
   bindResizeEvents();
-  
+
   world.renderer = new WebGLRenderer({
     canvas,
     antialias: true,
@@ -75,12 +79,15 @@ function init() {
     os.push(o);
   });
 
-
   render();
   function render() {
     requestAnimationFrame(render);
     // スクロール処理
     os.forEach((o) => scroll(o));
+
+    // レイキャスティング
+    raycast();
+
     world.renderer.render(world.scene, world.camera);
   }
 }
@@ -101,7 +108,7 @@ function resize(o, newCanvasRect) {
     $: { el },
     mesh,
     geometry,
-    rect
+    rect,
   } = o;
   const nextRect = el.getBoundingClientRect();
   const { x, y } = getWorldPosition(nextRect, newCanvasRect);
@@ -123,7 +130,7 @@ function getWorldPosition(rect, canvasRect) {
 function initScroller() {
   gsap.registerPlugin(ScrollTrigger);
 
-  const pageContainer = document.querySelector('#page-container');
+  const pageContainer = document.querySelector("#page-container");
 
   const scrollBar = Scrollbar.init(pageContainer, { delegateTo: document });
 
@@ -132,7 +139,7 @@ function initScroller() {
       if (arguments.length) {
         scrollBar.scrollTop = value; // setter
       }
-      return scrollBar.scrollTop;    // getter
+      return scrollBar.scrollTop; // getter
     },
     // getBoundingClientRect() {
     //   return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
@@ -142,20 +149,19 @@ function initScroller() {
   scrollBar.addListener(ScrollTrigger.update);
 
   ScrollTrigger.defaults({
-    scroller: pageContainer
+    scroller: pageContainer,
   });
 
   const el = document.querySelector("[data-webgl]");
-
 }
 
 function bindResizeEvents() {
   let timerId = null;
 
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     clearTimeout(timerId);
     timerId = setTimeout(() => {
-      console.log('resize');
+      console.log("resize");
 
       const newCanvasRect = canvas.getBoundingClientRect();
 
@@ -163,7 +169,7 @@ function bindResizeEvents() {
       world.renderer.setSize(newCanvasRect.width, newCanvasRect.height, false);
 
       // meshの位置とサイズの変更
-      os.forEach(o => resize(o, newCanvasRect));
+      os.forEach((o) => resize(o, newCanvasRect));
 
       // cameraのProjectionMatrixの変更
       const cameraWidth = newCanvasRect.width;
@@ -184,6 +190,28 @@ function bindResizeEvents() {
   });
 }
 
+function onPointerMove(event) {
+  // calculate pointer position in normalized device coordinates
+  // (-1 to +1) for both components
+
+  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+}
+
+function raycast() {
+  // update the picking ray with the camera and pointer position
+  raycaster.setFromCamera(pointer, world.camera);
+
+  // calculate objects intersecting the picking ray
+  const intersects = raycaster.intersectObjects(world.scene.children);
+  console.log(intersects);
+
+  for (let i = 0; i < intersects.length; i++) {
+    intersects[i].object.material.color.set(0x00ff00);
+  }
+}
+
+window.addEventListener("pointermove", onPointerMove);
 
 /**
  * Raycasting
