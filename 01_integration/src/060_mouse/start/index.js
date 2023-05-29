@@ -12,6 +12,7 @@ import {
   Mesh,
   Raycaster,
   Vector2,
+  ShaderMaterial,
 } from "three";
 
 const world = {};
@@ -53,10 +54,36 @@ function init() {
     const rect = el.getBoundingClientRect();
 
     const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
-    const material = new MeshBasicMaterial({
-      color: 0xff0000,
-      transparent: true,
-      opacity: 0.3,
+    // const material = new MeshBasicMaterial({
+    //   color: 0xff0000,
+    //   transparent: true,
+    //   opacity: 0.3,
+    // });
+    const material = new ShaderMaterial({
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);
+        }
+      `,
+      fragmentShader: `
+        varying vec2 vUv; 
+        uniform vec2 uMouse;
+        uniform float uHover;
+        void main() {
+          vec2 mouse = step(uMouse, vUv);
+          gl_FragColor = vec4(mouse, uHover, 1.);
+        }
+      `,
+      uniforms: {
+        uMouse: {
+          value: new Vector2(0.5, 0.5),
+        },
+        uHover: {
+          value: 0,
+        },
+      },
     });
     const mesh = new Mesh(geometry, material);
     mesh.position.z = 0;
@@ -209,9 +236,11 @@ function raycast() {
   for (let i = 0; i < world.scene.children.length; i++) {
     const _mesh = world.scene.children[i];
     if (intersect?.object === _mesh) {
-      _mesh.material.color.set(0x00ff00);
+      _mesh.material.uniforms.uMouse.value = intersect.uv;
+      _mesh.material.uniforms.uHover.value = 1;
     } else {
-      _mesh.material.color.set(0xff0000);
+      _mesh.material.uniforms.uHover.value = 0;
+      // _mesh.material.color.set(0xff0000);
     }
   }
 }
