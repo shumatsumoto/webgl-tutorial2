@@ -235,14 +235,24 @@ function raycast() {
 
   for (let i = 0; i < world.scene.children.length; i++) {
     const _mesh = world.scene.children[i];
+    const uHover = _mesh.material.uniforms.uHover;
     if (intersect?.object === _mesh) {
       _mesh.material.uniforms.uMouse.value = intersect.uv;
-      _mesh.material.uniforms.uHover.value = 1;
+      uHover.__endValue = 1;
     } else {
-      _mesh.material.uniforms.uHover.value = 0;
+      uHover.__endValue = 0;
       // _mesh.material.color.set(0xff0000);
     }
+
+    uHover.value = lerp(uHover.value, uHover.__endValue, 0.01);
   }
+}
+
+// 線形補間
+function lerp(a, b, n) {
+  let current = (1 - n) * a + n * b;
+  if (Math.abs(b - current) < 0.001) current = b;
+  return current;
 }
 
 window.addEventListener("pointermove", onPointerMove);
