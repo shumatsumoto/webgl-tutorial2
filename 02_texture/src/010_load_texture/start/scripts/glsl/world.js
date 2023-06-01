@@ -7,10 +7,13 @@ import {
   Mesh,
   Raycaster,
   Vector2,
+  TextureLoader,
 } from "three";
 
 import { utils, viewport } from "../helper";
 import mouse from "../component/mouse";
+
+const texLoader = new TextureLoader();
 
 const world = {
   os: [],
@@ -36,11 +39,13 @@ function init(canvas, viewport) {
   _initObj(viewport);
 }
 
-function _initObj(viewport) {
+async function _initObj(viewport) {
   const els = document.querySelectorAll("[data-webgl]");
-  els.forEach((el) => {
+  const prms = [...els].map(async (el) => {
     const rect = el.getBoundingClientRect();
 
+    const url = el.dataset["tex-1"];
+    const tex = await texLoader.loadAsync(url);
     const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
     // const material = new MeshBasicMaterial({
     //   color: 0xff0000,
@@ -60,15 +65,19 @@ function _initObj(viewport) {
         varying vec2 vUv;
         uniform vec2 uMouse;
         uniform float uHover;
+        uniform sampler2D tex1;
 
         void main() {
-          vec2 mouse = step(uMouse, vUv);
-          gl_FragColor = vec4(mouse, uHover, 1.);
+          // vec2 mouse = step(uMouse, vUv);
+          // gl_FragColor = vec4(mouse, uHover, 1.);
+          vec4 color = texture2D(tex1, vUv);
+          gl_FragColor = color;
         }
       `,
       uniforms: {
         uMouse: { value: new Vector2(0.5, 0.5) },
         uHover: { value: 0 },
+        tex1: { value: tex },
       },
     });
     const mesh = new Mesh(geometry, material);
@@ -90,7 +99,11 @@ function _initObj(viewport) {
 
     world.scene.add(mesh);
     world.os.push(o);
+    return o;
   });
+
+  await Promise.all(prms);
+  console.log(prms);
 
   adjustWorldPosition(viewport);
 }
