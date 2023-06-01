@@ -44,8 +44,18 @@ async function _initObj(viewport) {
   const prms = [...els].map(async (el) => {
     const rect = el.getBoundingClientRect();
 
-    const url = el.dataset["tex-1"];
-    const tex = await texLoader.loadAsync(url);
+    const texes = new Map();
+    const data = el.dataset;
+
+    for (let key in data) {
+      if (!key.startsWith("tex")) continue;
+
+      const url = data[key];
+      const tex = await texLoader.loadAsync(url);
+      key = key.replace("-", "");
+      texes.set(key, tex);
+    }
+
     const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
     // const material = new MeshBasicMaterial({
     //   color: 0xff0000,
@@ -66,26 +76,28 @@ async function _initObj(viewport) {
         uniform vec2 uMouse;
         uniform float uHover;
         uniform sampler2D tex1;
+        uniform sampler2D tex2;
 
         void main() {
           // vec2 mouse = step(uMouse, vUv);
           // gl_FragColor = vec4(mouse, uHover, 1.);
-          vec4 color = texture2D(tex1, vUv);
+          vec4 t1 = texture2D(tex1, vUv);
+          vec4 t2 = texture2D(tex2, vUv);
+          vec4 color = mix(t1, t2, step(.5, vUv.x));
           gl_FragColor = color;
         }
       `,
       uniforms: {
         uMouse: { value: new Vector2(0.5, 0.5) },
         uHover: { value: 0 },
-        tex1: { value: tex },
       },
+    });
+
+    texes.forEach((tex, key) => {
+      material.uniforms[key] = { value: tex };
     });
     const mesh = new Mesh(geometry, material);
     mesh.position.z = 0;
-
-    // const { x, y } = getWorldPosition(rect, canvasRect);
-    // mesh.position.x = x;
-    // mesh.position.y = y;
 
     const o = {
       mesh,
