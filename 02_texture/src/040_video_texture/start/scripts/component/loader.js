@@ -40,7 +40,7 @@ async function loadAllAssets() {
 
   textureCache.forEach((_, url) => {
     let prms = null;
-    if (/\.mp4$/.test(url)) {
+    if (/\.(mp4|webm|mov)$/.test(url)) {
       prms = loadVideo(url).then((tex) => {
         textureCache.set(url, tex);
       });
@@ -115,6 +115,16 @@ async function loadImg(url) {
 
 async function loadVideo(url) {
   // 読み込み対象のトータルの数値に+1
+
+  const video = document.createElement("video");
+  let extension = url.split(".").pop();
+  if (extension === "mov") {
+    extension = "quicktime";
+  }
+  if (!video.canPlayType(`video/${extension}`)) {
+    return null;
+  }
+
   incrementTotal();
   return new Promise((resolve) => {
     const video = document.createElement("video");
