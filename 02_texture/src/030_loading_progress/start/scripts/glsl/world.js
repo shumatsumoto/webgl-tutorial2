@@ -41,10 +41,9 @@ function init(canvas, viewport) {
 async function _initObj(viewport) {
   const els = document.querySelectorAll("[data-webgl]");
   const prms = [...els].map(async (el) => {
-    
     const texes = await loader.getTexByElement(el);
     const rect = el.getBoundingClientRect();
-    
+
     const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
     // const material = new MeshBasicMaterial({
     //   color: 0xff0000,
@@ -91,14 +90,14 @@ async function _initObj(viewport) {
     });
 
     function setupResolution(uniforms) {
-      if(!texes.get("tex1")) return uniforms;
+      if (!texes.get("tex1")) return uniforms;
 
       const media = texes.get("tex1").source.data;
-      
+
       const mediaRect = {
         width: media.naturalWidth,
-        height: media.naturalHeight
-      }
+        height: media.naturalHeight,
+      };
 
       const resolution = getResolutionUniform(rect, mediaRect);
       uniforms.uResolution = { value: resolution };
@@ -107,11 +106,10 @@ async function _initObj(viewport) {
     }
 
     function getResolutionUniform(toRect, mediaRect) {
-
       const { width: toW, height: toH } = toRect;
       const resolution = new Vector4(toW, toH, 1, 1);
 
-      if(!mediaRect) return resolution;
+      if (!mediaRect) return resolution;
 
       const { width: mediaW, height: mediaH } = mediaRect;
 
@@ -119,8 +117,8 @@ async function _initObj(viewport) {
       const toAspect = toH / toW;
 
       let xAspect, yAspect;
-      if(toAspect > mediaAspect) {
-        xAspect = 1 / toAspect * mediaAspect;
+      if (toAspect > mediaAspect) {
+        xAspect = (1 / toAspect) * mediaAspect;
         yAspect = 1;
       } else {
         xAspect = 1;
@@ -153,12 +151,12 @@ async function _initObj(viewport) {
 
     world.scene.add(mesh);
     world.os.push(o);
-    console.log(4);
+    // console.log(4);
     return o;
   });
 
   await Promise.all(prms);
-  console.log(2);
+  // console.log(2);
 
   adjustWorldPosition(viewport);
 }
@@ -176,7 +174,7 @@ function adjustWorldPosition(viewport) {
 
   // meshの位置とサイズの変更
   world.os.forEach((o) => resize(o, viewport));
-  console.log(3);
+  // console.log(3);
   // cameraのProjectionMatrixの変更
   updateCamera(viewport);
 }

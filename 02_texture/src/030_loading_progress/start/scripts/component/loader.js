@@ -6,10 +6,10 @@ const texLoader = new TextureLoader();
 window.textureCache = textureCache;
 
 const loader = {
-    loadAllAssets,
-    loadImg,
-    getTexByElement
-}
+  loadAllAssets,
+  loadImg,
+  getTexByElement,
+};
 
 async function loadAllAssets() {
   const els = document.querySelectorAll("[data-webgl]");
@@ -26,56 +26,75 @@ async function loadAllAssets() {
   }
 
   const texPrms = [];
-  
+
   textureCache.forEach((_, url) => {
-    const prms = loadImg(url).then(tex => {
-        textureCache.set(url, tex);
+    const prms = loadImg(url).then((tex) => {
+      textureCache.set(url, tex);
     });
-    
+
     texPrms.push(prms);
   });
 
   await Promise.all(texPrms);
-
 }
 
+let total = 0;
+let progress = 0;
+
 async function loadImg(url) {
-    const tex = await texLoader.loadAsync(url);
-    tex.magFilter = LinearFilter;
-    tex.minFilter = LinearFilter;
-    tex.needsUpdate = false;
-    return tex;
+  // 読み込み対象のトータルの数値に + 1
+  incrementTotal();
+  const tex = await texLoader.loadAsync(url);
+  // 読み込み対象のプログレスの数値に + 1
+  incrementProgress();
+  tex.magFilter = LinearFilter;
+  tex.minFilter = LinearFilter;
+  tex.needsUpdate = false;
+  return tex;
+}
+
+function incrementTotal() {
+  total++;
+}
+
+function incrementProgress() {
+  progress++;
+  progressAction(progress, total);
+}
+
+function progressAction(progress, total) {
+  console.log(progress, total);
 }
 
 async function getTexByElement(el) {
-    const texes = new Map;
-    const data = el.dataset;
+  const texes = new Map();
+  const data = el.dataset;
 
-    let mediaLoaded = null;
-    let first = true;
-    for(let key in data) {
-      if(!key.startsWith("tex")) continue;
+  let mediaLoaded = null;
+  let first = true;
+  for (let key in data) {
+    if (!key.startsWith("tex")) continue;
 
-      const url = data[key];
-      const tex = textureCache.get(url);
+    const url = data[key];
+    const tex = textureCache.get(url);
 
-      key = key.replace("-", ""); 
-      
-      texes.set(key, tex);
+    key = key.replace("-", "");
 
-      if(first && el instanceof HTMLImageElement) {
-        mediaLoaded = new Promise(resolve => {
-          el.onload = resolve;
-        });
+    texes.set(key, tex);
 
-        el.src = url;
-        first = false;
-      }
+    if (first && el instanceof HTMLImageElement) {
+      mediaLoaded = new Promise((resolve) => {
+        el.onload = resolve;
+      });
+
+      el.src = url;
+      first = false;
     }
+  }
 
-    await mediaLoaded;
+  await mediaLoaded;
 
-    return texes;
+  return texes;
 }
 
 export default loader;
