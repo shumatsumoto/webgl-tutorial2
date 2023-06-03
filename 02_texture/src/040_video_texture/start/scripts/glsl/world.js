@@ -41,10 +41,9 @@ function init(canvas, viewport) {
 async function _initObj(viewport) {
   const els = document.querySelectorAll("[data-webgl]");
   const prms = [...els].map(async (el) => {
-    
     const texes = await loader.getTexByElement(el);
     const rect = el.getBoundingClientRect();
-    
+
     const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
     // const material = new MeshBasicMaterial({
     //   color: 0xff0000,
@@ -81,7 +80,7 @@ async function _initObj(viewport) {
           vec4 t1 = texture2D(tex1, uv);
           vec4 t2 = texture2D(tex2, uv);
           vec4 color = mix(t1, t2, step(.5, uv.x));
-          gl_FragColor = t2;
+          gl_FragColor = t1;
         }
       `,
       uniforms: {
@@ -91,13 +90,17 @@ async function _initObj(viewport) {
     });
 
     function setupResolution(uniforms) {
-      if(!texes.get("tex1")) return uniforms;
+      if (!texes.get("tex1")) return uniforms;
 
       const media = texes.get("tex1").source.data;
-      
-      const mediaRect = {
-        width: media.naturalWidth,
-        height: media.naturalHeight
+
+      const mediaRect = {};
+      if (media instanceof HTMLImageElement) {
+        mediaRect.width = media.naturalWidth;
+        mediaRect.height = media.naturalHeight;
+      } else if (media instanceof HTMLVideoElement) {
+        mediaRect.width = media.videoWidth;
+        mediaRect.height = media.videoHeight;
       }
 
       const resolution = getResolutionUniform(rect, mediaRect);
@@ -107,11 +110,10 @@ async function _initObj(viewport) {
     }
 
     function getResolutionUniform(toRect, mediaRect) {
-
       const { width: toW, height: toH } = toRect;
       const resolution = new Vector4(toW, toH, 1, 1);
 
-      if(!mediaRect) return resolution;
+      if (!mediaRect) return resolution;
 
       const { width: mediaW, height: mediaH } = mediaRect;
 
@@ -119,8 +121,8 @@ async function _initObj(viewport) {
       const toAspect = toH / toW;
 
       let xAspect, yAspect;
-      if(toAspect > mediaAspect) {
-        xAspect = 1 / toAspect * mediaAspect;
+      if (toAspect > mediaAspect) {
+        xAspect = (1 / toAspect) * mediaAspect;
         yAspect = 1;
       } else {
         xAspect = 1;
