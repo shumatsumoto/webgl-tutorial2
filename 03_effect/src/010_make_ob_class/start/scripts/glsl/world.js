@@ -1,18 +1,8 @@
-import {
-  WebGLRenderer,
-  Scene,
-  PerspectiveCamera,
-  PlaneGeometry,
-  ShaderMaterial,
-  Mesh,
-  Raycaster,
-  Vector2,
-  Vector4,
-} from "three";
+import { WebGLRenderer, Scene, PerspectiveCamera, Raycaster } from "three";
+import { Ob } from "./Ob";
 
 import { utils, viewport } from "../helper";
 import mouse from "../component/mouse";
-import loader from "../component/loader";
 
 const world = {
   os: [],
@@ -41,118 +31,10 @@ function init(canvas, viewport) {
 async function _initObj(viewport) {
   const els = document.querySelectorAll("[data-webgl]");
   const prms = [...els].map(async (el) => {
-    const texes = await loader.getTexByElement(el);
-    const rect = el.getBoundingClientRect();
-
-    const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
-    // const material = new MeshBasicMaterial({
-    //   color: 0xff0000,
-    //   transparent: true,
-    //   opacity: 0.3,
-    // });
-    const material = new ShaderMaterial({
-      vertexShader: `
-        varying vec2 vUv;
-
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
-        }
-      `,
-      fragmentShader: `
-        varying vec2 vUv;
-        uniform vec2 uMouse;
-        uniform vec4 uResolution;
-        uniform float uHover;
-        uniform sampler2D tex1;
-        uniform sampler2D tex2;
-
-        vec2 coverUv(vec2 uv, vec4 resolution) {
-          return (uv - .5) * resolution.zw + .5;
-        }
-
-        void main() {
-          // vec2 mouse = step(uMouse, vUv);
-          // gl_FragColor = vec4(mouse, uHover, 1.);
-
-          vec2 uv = coverUv(vUv, uResolution);
-
-          vec4 t1 = texture2D(tex1, uv);
-          vec4 t2 = texture2D(tex2, uv);
-          vec4 color = mix(t1, t2, step(.5, uv.x));
-          gl_FragColor = t1;
-        }
-      `,
-      uniforms: {
-        uMouse: { value: new Vector2(0.5, 0.5) },
-        uHover: { value: 0 },
-      },
-    });
-
-    function setupResolution(uniforms) {
-      if (!texes.get("tex1")) return uniforms;
-
-      const media = texes.get("tex1").source.data;
-
-      const mediaRect = {};
-      if (media instanceof HTMLImageElement) {
-        mediaRect.width = media.naturalWidth;
-        mediaRect.height = media.naturalHeight;
-      } else if (media instanceof HTMLVideoElement) {
-        mediaRect.width = media.videoWidth;
-        mediaRect.height = media.videoHeight;
-      }
-      const resolution = getResolutionUniform(rect, mediaRect);
-      uniforms.uResolution = { value: resolution };
-
-      return uniforms;
-    }
-
-    function getResolutionUniform(toRect, mediaRect) {
-      const { width: toW, height: toH } = toRect;
-      const resolution = new Vector4(toW, toH, 1, 1);
-
-      if (!mediaRect) return resolution;
-
-      const { width: mediaW, height: mediaH } = mediaRect;
-
-      const mediaAspect = mediaH / mediaW;
-      const toAspect = toH / toW;
-
-      let xAspect, yAspect;
-      if (toAspect > mediaAspect) {
-        xAspect = (1 / toAspect) * mediaAspect;
-        yAspect = 1;
-      } else {
-        xAspect = 1;
-        yAspect = toAspect / mediaAspect;
-      }
-
-      resolution.z = xAspect;
-      resolution.w = yAspect;
-      return resolution;
-    }
-
-    material.uniforms = setupResolution(material.uniforms);
-
-    texes.forEach((tex, key) => {
-      material.uniforms[key] = { value: tex };
-    });
-
-    const mesh = new Mesh(geometry, material);
-    mesh.position.z = 0;
-
-    const o = {
-      mesh,
-      geometry,
-      material,
-      rect,
-      $: {
-        el,
-      },
-    };
-
-    world.scene.add(mesh);
+    const type = el.dataset.webgl;
+    console.log(type);
+    const o = await Ob.init({ el, type });
+    world.scene.add(o.mesh);
     world.os.push(o);
     return o;
   });
