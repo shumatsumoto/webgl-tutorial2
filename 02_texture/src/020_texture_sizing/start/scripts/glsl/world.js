@@ -7,6 +7,7 @@ import {
   Mesh,
   Raycaster,
   Vector2,
+  Vector4,
 } from "three";
 
 import { utils, viewport } from "../helper";
@@ -63,16 +64,24 @@ async function _initObj(viewport) {
       fragmentShader: `
         varying vec2 vUv;
         uniform vec2 uMouse;
+        uniform vec4 uResolution;
         uniform float uHover;
         uniform sampler2D tex1;
         uniform sampler2D tex2;
 
+        vec2 coverUv(vec2 uv, vec4 resolution) {
+          return (uv - .5) * resolution.zw + .5;
+        }
+
         void main() {
           // vec2 mouse = step(uMouse, vUv);
           // gl_FragColor = vec4(mouse, uHover, 1.);
-          vec4 t1 = texture2D(tex1, vUv);
-          vec4 t2 = texture2D(tex2, vUv);
-          vec4 color = mix(t1, t2, step(.5, vUv.x));
+
+          vec2 uv = coverUv(vUv, uResolution);
+
+          vec4 t1 = texture2D(tex1, uv);
+          vec4 t2 = texture2D(tex2, uv);
+          vec4 color = mix(t1, t2, step(.5, uv.x));
           gl_FragColor = color;
         }
       `,
@@ -81,6 +90,47 @@ async function _initObj(viewport) {
         uHover: { value: 0 },
       },
     });
+
+    function setupResolution(uniforms) {
+      if (!texes.get("tex1")) return uniforms;
+
+      const media = texes.get("tex1").source.data;
+      const mediaRect = {
+        width: media.naturalWidth,
+        height: media.naturalHeight,
+      };
+
+      const resolution = getResolutionUniform(rect, mediaRect);
+      uniforms.uResolution = { value: resolution };
+      return uniforms;
+    }
+
+    function getResolutionUniform(toRect, mediaRect) {
+      const { width: toW, height: toH } = toRect;
+      const resolution = new Vector4(toW, toH, 1, 1);
+
+      if (!mediaRect) return resolution;
+
+      const { width: mediaW, height: mediaH } = mediaRect;
+
+      const mediaAspect = mediaH / mediaW;
+      const toAspect = toH / toW;
+
+      let xAspect, yAspect;
+      if (toAspect > mediaAspect) {
+        xAspect = (1 / toAspect) * mediaAspect;
+        yAspect = 1;
+      } else {
+        xAspect = 1;
+        yAspect = toAspect / mediaAspect;
+      }
+
+      resolution.z = xAspect;
+      resolution.w = yAspect;
+      return resolution;
+    }
+
+    material.uniforms = setupResolution(material.uniforms);
 
     texes.forEach((tex, key) => {
       material.uniforms[key] = { value: tex };
