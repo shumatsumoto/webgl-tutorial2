@@ -12,6 +12,7 @@ import {
 
 import { utils, viewport } from "../helper";
 import mouse from "../component/mouse";
+import loader from "../component/loader";
 
 const texLoader = new TextureLoader();
 
@@ -44,17 +45,7 @@ async function _initObj(viewport) {
   const prms = [...els].map(async (el) => {
     const rect = el.getBoundingClientRect();
 
-    const texes = new Map();
-    const data = el.dataset;
-
-    for (let key in data) {
-      if (!key.startsWith("tex")) continue;
-
-      const url = data[key];
-      const tex = await texLoader.loadAsync(url);
-      key = key.replace("-", "");
-      texes.set(key, tex);
-    }
+    const texes = loader.getTexByElement(el);
 
     const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
     // const material = new MeshBasicMaterial({

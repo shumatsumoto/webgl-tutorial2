@@ -6,6 +6,7 @@ const texLoader = new TextureLoader();
 const loader = {
   loadAllAssets,
   loadImg,
+  getTexByElement,
 };
 
 async function loadAllAssets() {
@@ -41,6 +42,21 @@ async function loadImg(url) {
   tex.minFilter = LinearFilter;
   tex.needsUpdate = false;
   return tex;
+}
+
+function getTexByElement(el) {
+  const texes = new Map();
+  const data = el.dataset;
+
+  for (let key in data) {
+    if (!key.startsWith("tex")) continue;
+
+    const url = data[key];
+    const tex = textureCache.get(url);
+    key = key.replace("-", "");
+    texes.set(key, tex);
+  }
+  return texes;
 }
 
 export default loader;

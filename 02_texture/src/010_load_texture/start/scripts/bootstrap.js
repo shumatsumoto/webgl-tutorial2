@@ -4,13 +4,13 @@ import scroller from "./component/scroller";
 import mouse from "./component/mouse";
 import loader from "./component/loader";
 
-export function init() {
+export async function init() {
   const canvas = document.querySelector("#canvas");
   viewport.init(canvas);
 
   scroller.init();
 
-  loader.loadAllAssets();
+  await loader.loadAllAssets();
 
   world.init(canvas, viewport);
 
