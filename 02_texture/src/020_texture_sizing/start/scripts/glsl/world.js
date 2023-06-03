@@ -40,11 +40,11 @@ function init(canvas, viewport) {
 async function _initObj(viewport) {
   const els = document.querySelectorAll("[data-webgl]");
   const prms = [...els].map(async (el) => {
+    const texes = await loader.getTexByElement(el);
     const rect = el.getBoundingClientRect();
-    
-    const texes = loader.getTexByElement(el);
+
     console.log(texes);
-    
+
     const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
     // const material = new MeshBasicMaterial({
     //   color: 0xff0000,
@@ -84,7 +84,7 @@ async function _initObj(viewport) {
 
     texes.forEach((tex, key) => {
       material.uniforms[key] = { value: tex };
-    })
+    });
     const mesh = new Mesh(geometry, material);
     mesh.position.z = 0;
 
