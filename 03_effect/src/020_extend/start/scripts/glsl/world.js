@@ -1,13 +1,10 @@
-import {
-  WebGLRenderer,
-  Scene,
-  PerspectiveCamera,
-  Raycaster,
-} from "three";
+import { WebGLRenderer, Scene, PerspectiveCamera, Raycaster } from "three";
 import { Ob } from "./Ob";
 
 import { utils, viewport } from "../helper";
 import mouse from "../component/mouse";
+
+import NormalClass from "./normal";
 
 const world = {
   os: [],
@@ -38,7 +35,12 @@ async function _initObj(viewport) {
   const prms = [...els].map(async (el) => {
     const type = el.dataset.webgl;
     console.log(type);
-    const o = await Ob.init({el, type});
+    let o = null;
+    if (type === "normal") {
+      o = await NormalClass.init({ el, type });
+    } else if (type === "gray") {
+      o = await NormalClass.init({ el, type });
+    }
     world.scene.add(o.mesh);
     world.os.push(o);
     return o;
