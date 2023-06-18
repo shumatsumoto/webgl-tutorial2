@@ -37,6 +37,7 @@ async function _initObj(viewport) {
     console.log(type);
     let o = null;
     if (type === "normal") {
+      debugger;
       o = await NormalClass.init({ el, type });
     } else if (type === "gray") {
       o = await NormalClass.init({ el, type });
