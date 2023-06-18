@@ -1,8 +1,8 @@
-﻿@use "common";
-@use "mouse";
-@use "menu";
-@use "fonts";
-@use "home";
+﻿@use "./parts/common";
+@use "./parts/mouse";
+@use "./parts/menu";
+@use "./parts/fonts";
+@use "./pages/home";
 
 body {
     margin: 0;
