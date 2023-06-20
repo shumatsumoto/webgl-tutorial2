@@ -1,4 +1,5 @@
-﻿@use "./parts/common";
+﻿@use "./vendors/css-reset.css";
+@use "./parts/common";
 @use "./parts/mouse";
 @use "./parts/menu";
 @use "./parts/fonts";
