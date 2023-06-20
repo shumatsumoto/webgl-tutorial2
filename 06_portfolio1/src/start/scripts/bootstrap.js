@@ -10,6 +10,7 @@ import {
   mountScrollHandler,
 } from "./component/slide-handler";
 import { initRipplePass } from "./glsl/ripple";
+import "./component/scroll-animation";
 
 window.debug = enableDebugMode(0);
 
@@ -41,7 +42,12 @@ export async function init() {
 
   await world.init(canvas, viewport);
 
-  mountNavBtnHandler(".fv__slider", ".fv__btn.prev", ".fv__btn.next", ".fv__text-shader");
+  mountNavBtnHandler(
+    ".fv__slider",
+    ".fv__btn.prev",
+    ".fv__btn.next",
+    ".fv__text-shader"
+  );
   // mountSkillBtnHandler(".skill__slider", ".fv__btn.prev", ".fv__btn.next", ".skill__ul");
   // mountScrollHandler(".skill__slider", ".skill", ".skill__ul");
 
@@ -51,15 +57,15 @@ export async function init() {
     world.adjustWorldPosition(viewport);
 
     mouse.resize();
-  })
+  });
 
   world.addRenderAction(() => {
     mouse.render();
-    
+
     // レイキャスティング
     world.raycast();
-  })
-  
+  });
+
   const { getTexture } = await initRipplePass(world, mouse);
 
   menu.init(world, scroller);

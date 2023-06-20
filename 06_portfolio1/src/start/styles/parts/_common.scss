@@ -1,5 +1,11 @@
 @use "../globals" as *;
 
+:root {
+    --c-black: #{$c-black};
+    --c-white: #{$c-white};
+    --c-gray: #{$c-gray};
+}
+
 body {
     font-family: $base-font;
 }
